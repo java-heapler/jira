@@ -12,5 +12,5 @@ jobs:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v6
       - run: uv python install ${{ matrix.python }}
-      - run: uv run --locked --python ${{ matrix.python }} --extra dev pytest --cov=jira_agent --cov-branch --cov-fail-under=97
+      - run: uv run --locked --python ${{ matrix.python }} --extra dev pytest --cov=jira_agent --cov-branch --cov-fail-under=100
       - run: uv build

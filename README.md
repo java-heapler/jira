@@ -1,4 +1,6 @@
-# Jira agent
+# Jira MCP
+
+Source: [jira-mcp](https://github.com/java-heapler/jira-mcp). The executable and Python package names remain unchanged.
 
 A standalone JSON CLI and agent skill for Jira Cloud REST API v3. Search issues, discover project fields, and preview authorized changes before sending them. It uses standard Jira capabilities available on Free, requires no paid add-on, and never creates accounts, starts trials, changes billing, or checks your subscription tier.
 
@@ -53,10 +55,10 @@ Discover required/custom fields and allowed issue types first; project configura
 
 Credentials go only to validated Atlassian HTTPS hosts, HTTP redirects and environment proxies are disabled, timeout is 30 seconds, and responses and input files are limited to 4 MiB. Error bodies and raw network exceptions are not printed, because they may contain secrets. Private issue data appears in successful JSON and previews; handle your terminal output accordingly. This tool has no persistent cache.
 
-JSON stdout; exit 0 on success, 1 on application errors, 2 on invalid CLI syntax. The initial 30-test suite passes with 100% measured line and branch coverage (232 statements, 112 branches; the module-entry wrapper is excluded from instrumentation and exercised by a subprocess test). Coverage measures execution, not correctness across every Jira configuration. Synthetic tests cover transport, request payloads, pagination, write previews, error handling, and the command entry point. Real tenant configuration and custom-field workflows require a read-only live check after credentials are configured; synthetic tests do not prove live access.
+JSON stdout; exit 0 on success, 1 on application errors, 2 on invalid CLI syntax. The suite enforces 100% measured statement and branch coverage, including the module entry point. Coverage measures execution, not correctness across every Jira configuration. Synthetic tests cover transport, request payloads, pagination, write previews, error handling, and the command entry point. Real tenant configuration and custom-field workflows require a read-only live check after credentials are configured; synthetic tests do not prove live access.
 
 ```sh
-uv run --extra dev pytest --cov=jira_agent --cov-branch --cov-report=term-missing
+uv run --extra dev pytest --cov=jira_agent --cov-branch --cov-report=term-missing --cov-fail-under=100
 uv build
 ```
 

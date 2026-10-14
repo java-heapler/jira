@@ -11,6 +11,9 @@ requires-python = ">=3.11"
 authors = [{name = "Joseph Heupler"}]
 dependencies = []
 
+[project.urls]
+Repository = "https://github.com/java-heapler/jira-mcp"
+
 [project.scripts]
 jira-agent = "jira_agent.cli:run"
 
@@ -23,3 +26,7 @@ packages = ["src/jira_agent"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["src"]
+
+[tool.coverage.report]
+fail_under = 100
+precision = 2

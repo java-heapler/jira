@@ -242,3 +242,20 @@ def test_strict_response_and_fields(server,tmp_path,monkeypatch):
     with pytest.raises(cli.JiraError): cli.nonempty({'accountId':None},'accountId')
     for obj in ({'summary':[]},{'summary':' '},{'project':42},{'issuetype':True},{'project':{'key':''}}):
         with pytest.raises(cli.JiraError): cli.fields_file(fieldfile(tmp_path,obj))
+
+
+@pytest.mark.parametrize('issue,expected_code', [('DEMO-1', 0), ('../bad', 1)])
+def test_module_entrypoint(monkeypatch, capsys, issue, expected_code):
+    """Exercise the module's actual exit wrapper with an offline preview/error."""
+    import runpy
+
+    monkeypatch.setattr(sys, 'argv', ['jira-agent', 'assign', issue, '--unassign'])
+    with pytest.raises(SystemExit) as result:
+        runpy.run_path(cli.__file__, run_name='__main__')
+    assert result.value.code == expected_code
+    payload = json.loads(capsys.readouterr().out)
+    if expected_code:
+        assert 'Identifier must contain' in payload['error']
+    else:
+        assert payload == {'preview': True, 'method': 'PUT', 'path': '/issue/DEMO-1/assignee',
+                           'body': {'accountId': None}, 'sent': False}
